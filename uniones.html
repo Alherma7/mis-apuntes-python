@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📊 Sheetcheat — Joining Data with pandas</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      color: #145374;
+      font-size: 28px;
+    }
+    h2 {
+      margin-top: 40px;
+      color: #276678;
+    }
+    ul {
+      list-style-type: square;
+      margin-bottom: 20px;
+    }
+    pre {
+      background-color: #edf6ff;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 0.95em;
+    }
+    p {
+      margin: 8px 0;
+    }
+    a {
+      color: #145374;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🐼 Sheetcheat — Joining Data with pandas</h1>
+
+<h2>📚 Índice</h2>
+<ul>
+  <li><a href="#merges">1. Merges básicos</a></li>
+  <li><a href="#join-types">2. Tipos de Join</a></li>
+  <li><a href="#self-merge">3. Merge consigo mismo</a></li>
+  <li><a href="#index-merge">4. Merge usando índices</a></li>
+  <li><a href="#filter-joins">5. Semi y Anti Join</a></li>
+  <li><a href="#concat">6. Concatenación</a></li>
+  <li><a href="#validate">7. Validación</a></li>
+  <li><a href="#ordered">8. merge_ordered() y merge_asof()</a></li>
+  <li><a href="#query">9. Query con condiciones</a></li>
+  <li><a href="#melt">10. Reshape con melt()</a></li>
+</ul>
+
+<h2 id="merges">1. Merges básicos</h2>
+<pre><code>df1 = pd.DataFrame({'id': [1, 2], 'nombre': ['Ana', 'Luis']})
+df2 = pd.DataFrame({'id': [1, 3], 'ciudad': ['Madrid', 'Valencia']})
+df_merged = df1.merge(df2, on='id')
+print(df_merged)</code></pre>
+<p><strong>💡 Salida:</strong></p>
+<pre><code>   id nombre  ciudad
+0   1    Ana  Madrid</code></pre>
+
+<h2 id="join-types">2. Tipos de Join</h2>
+<pre><code>df_inner = df1.merge(df2, how='inner', on='id')
+df_left  = df1.merge(df2, how='left', on='id')
+df_right = df1.merge(df2, how='right', on='id')
+df_outer = df1.merge(df2, how='outer', on='id')</code></pre>
+<p><strong>🖥️ Inner Join Salida:</strong></p>
+<pre><code>   id nombre  ciudad
+0   1    Ana  Madrid</code></pre>
+
+<p><strong>🖥️ Left Join Salida:</strong></p>
+<pre><code>   id nombre  ciudad
+0   1    Ana  Madrid
+1   2   Luis     NaN</code></pre>
+
+<h2 id="self-merge">3. Merge consigo mismo</h2>
+<pre><code>sequels.merge(sequels, left_on='sequel', right_on='id',
+              suffixes=('_org', '_seq'))</code></pre>
+<p><strong>💡 Salida parcial:</strong></p>
+<pre><code>title_org     title_seq
+Toy Story     Toy Story 2
+Toy Story 2   Toy Story 3</code></pre>
+
+<h2 id="index-merge">4. Merge usando índices</h2>
+<pre><code>df1 = pd.DataFrame({'valor': [100]}, index=[1])
+df2 = pd.DataFrame({'extra': ['Sí']}, index=[1])
+df1.merge(df2, left_index=True, right_index=True)</code></pre>
+<p><strong>💡 Salida:</strong></p>
+<pre><code>   valor extra
+1    100   Sí</code></pre>
+
+<h2 id="filter-joins">5. Semi y Anti Join</h2>
+<h3>Semi Join</h3>
+<pre><code>df1 = pd.DataFrame({'id': [1, 2, 3]})
+df2 = pd.DataFrame({'id': [2, 3]})
+semi = df1[df1['id'].isin(df2['id'])]
+print(semi)</code></pre>
+<pre><code>   id
+1   2
+2   3</code></pre>
+
+<h3>Anti Join</h3>
+<pre><code>merged = df1.merge(df2, on='id', how='left', indicator=True)
+anti = merged[merged['_merge'] == 'left_only']
+print(anti)</code></pre>
+<pre><code>   id     _merge
+0   1  left_only</code></pre>
+
+<h2 id="concat">6. Concatenación</h2>
+<pre><code>df1 = pd.DataFrame({'id': [1, 2]})
+df2 = pd.DataFrame({'id': [3, 4]})
+df_concat = pd.concat([df1, df2], ignore_index=True)
+print(df_concat)</code></pre>
+<pre><code>   id
+0   1
+1   2
+2   3
+3   4</code></pre>
+
+<h2 id="validate">7. Validación</h2>
+<pre><code>df1.merge(df2, on='id', validate='one_to_one')</code></pre>
+<p><strong>⚠️ Puede lanzar error si hay duplicados.</strong></p>
+
+<h2 id="ordered">8. merge_ordered() y merge_asof()</h2>
+<h3>merge_ordered()</h3>
+<pre><code>df1 = pd.DataFrame({'fecha': ['2023-01', '2023-03'], 'ventas': [100, 300]})
+df2 = pd.DataFrame({'fecha': ['2023-02'], 'costos': [200]})
+pd.merge_ordered(df1, df2, on='fecha', fill_method='ffill')</code></pre>
+<pre><code>     fecha  ventas  costos
+0  2023-01   100.0     NaN
+1  2023-02   100.0   200.0
+2  2023-03   300.0   200.0</code></pre>
+
+<h3>merge_asof()</h3>
+<pre><code>aapl = pd.DataFrame({'fecha': ['2020-01-01', '2020-01-02'], 'valor': [100, 102]})
+ibm = pd.DataFrame({'fecha': ['2020-01-01', '2020-01-03'], 'precio': [200, 210]})
+pd.merge_asof(aapl, ibm, on='fecha')</code></pre>
+<pre><code>       fecha  valor  precio
+0 2020-01-01    100     200
+1 2020-01-02    102     200</code></pre>
+
+<h2 id="query">9. Query con condiciones</h2>
+<pre><code>df = pd.DataFrame({'nombre': ['Ana', 'Luis'], 'edad': [28, 34]})
+df.query('edad < 30')</code></pre>
+<pre><code>  nombre  edad
+0    Ana    28</code></pre>
+
+<h2 id="melt">10. Reshape con melt()</h2>
+<pre><code>df = pd.DataFrame({
+    'id': [1, 2],
+    '2018': [100, 200],
+    '2019': [110, 210]
+})
+df_tall = df.melt(id_vars='id', var_name='año', value_name='ventas')
+print(df_tall)</code></pre>
+<pre><code>   id   año  ventas
+0   1  2018     100
+1   2  2018     200
+2   1  2019     110
+3   2  2019     210</code></pre>
+
+</body>
+</html>

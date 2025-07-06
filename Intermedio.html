@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sheetcheat — Intermediate Python</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+      color: #333;
+    }
+    h1, h2 {
+      color: #145374;
+    }
+    code {
+      background-color: #e6f2ff;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      background-color: #e6f2ff;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.95em;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐍 Sheetcheat — Intermediate Python con Matplotlib y Pandas</h1>
+
+  <section>
+    <h2>🎨 Matplotlib — Visualización Básica</h2>
+    <pre><code>import matplotlib.pyplot as plt
+
+year = [1950, 1970, 1990, 2010]
+pop = [2.519, 3.692, 5.263, 6.972]
+
+plt.plot(year, pop)             # Línea
+plt.scatter(year, pop)          # Dispersión
+plt.hist(values, bins=3)        # Histograma
+
+plt.xlabel('Year')
+plt.ylabel('Population')
+plt.title('World Population Projections')
+plt.yticks([0, 2, 4, 6, 8, 10], ['0', '2B', '4B', '6B', '8B', '10B'])
+
+year = [1800, 1850, 1900] + year
+pop = [1.0, 1.262, 1.650] + pop</code></pre>
+  </section>
+
+  <section>
+    <h2>📦 Diccionarios</h2>
+    <pre><code>world = {"afghanistan": 30.55, "albania": 2.77}
+print(world["albania"])
+world["sealand"] = 0.000027
+del(world["sealand"])
+print("sealand" in world)</code></pre>
+  </section>
+
+  <section>
+    <h2>🐼 Pandas — DataFrames</h2>
+    <pre><code>import pandas as pd
+
+data = {
+  "country": ["Brazil", "Russia", "India", "China", "South Africa"],
+  "capital": ["Brasilia", "Moscow", "New Delhi", "Beijing", "Pretoria"],
+  "area": [8.516, 17.10, 3.286, 9.597, 1.221],
+  "population": [200.4, 143.5, 1252, 1357, 52.98]
+}
+brics = pd.DataFrame(data)
+brics.index = ["BR", "RU", "IN", "CH", "SA"]
+
+brics = pd.read_csv("path/to/brics.csv", index_col=0)</code></pre>
+  </section>
+
+  <section>
+    <h2>📌 Selección de Datos</h2>
+    <pre><code>brics["country"]
+brics[["country", "capital"]]
+brics[1:4]
+brics.loc["RU"]
+brics.loc[["RU", "IN"], ["country", "capital"]]
+brics.iloc[[1,2,3], [0,1]]</code></pre>
+  </section>
+
+  <section>
+    <h2>🔍 Filtrado con Booleanos</h2>
+    <pre><code>is_huge = brics["area"] > 8
+brics[is_huge]
+
+import numpy as np
+cond = np.logical_and(brics["area"] > 8, brics["area"] < 10)
+brics[cond]</code></pre>
+  </section>
+
+  <section>
+    <h2>🔁 Bucles</h2>
+    <pre><code>fam = [1.73, 1.68, 1.71]
+for height in fam:
+    print(height)
+
+world = {"afghanistan": 30.55, "albania": 2.77}
+for k, v in world.items():
+    print(k, v)
+
+for label, row in brics.iterrows():
+    print(label + ": " + row["capital"])
+
+brics["name_length"] = brics["country"].apply(len)</code></pre>
+  </section>
+
+  <section>
+    <h2>🧠 Control de Flujo</h2>
+    <pre><code>z = 5
+if z % 2 == 0:
+    print("divisible por 2")
+elif z % 3 == 0:
+    print("divisible por 3")
+else:
+    print("no divisible por 2 ni por 3")
+
+error = 50
+while error > 1:
+    error = error / 4
+    print(error)</code></pre>
+  </section>
+
+  <section>
+    <h2>✅ Comparadores y Booleanos</h2>
+    <pre><code>2 < 3
+x = 2
+y = 3
+x < y
+"carl" < "chris"
+
+bmi = np.array([21.852, 20.975, 21.75, 24.747, 21.441])
+bmi > 23
+np.logical_and(bmi > 21, bmi < 22)</code></pre>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sheetcheat de Python - Introducción</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2 {
+      color: #2b7a78;
+    }
+    pre {
+      background-color: #e6f2ff;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐍 Sheetcheat de Python — Introducción Básica</h1>
+
+  <h2>🧮 Operaciones como Calculadora</h2>
+  <pre><code>print(5 + 5)      # Suma
+print(5 - 5)      # Resta
+print(3 * 5)      # Multiplicación
+print(10 / 2)     # División</code></pre>
+
+  <h2>🧍‍♂️ Variables y Tipos</h2>
+  <pre><code>height = 1.79
+weight = 68.7
+bmi = weight / height ** 2
+print(bmi)
+
+type(bmi)       # float
+type(5)         # int
+type("texto")   # str
+type(True)      # bool</code></pre>
+
+  <h2>📚 Listas</h2>
+  <pre><code>fam = ["liz", 1.73, "emma", 1.68]
+fam2 = [["liz", 1.73], ["emma", 1.68]]
+
+fam[3]        # Elemento en índice 3
+fam[-1]       # Último elemento
+fam[1:4]      # Slice del 1 al 3
+
+fam[7] = 1.86
+fam.append("me")
+del fam[2]</code></pre>
+
+  <h2>🧠 Funciones y Métodos</h2>
+  <pre><code>max(fam)
+round(1.68, 1)
+help(round)
+
+fam.index("mom")
+fam.count(1.73)
+
+sister = "liz"
+sister.capitalize()
+sister.replace("z", "sa")</code></pre>
+
+  <h2>📦 Paquetes y NumPy</h2>
+  <pre><code>import numpy as np
+
+height = [1.73, 1.68]
+weight = [65.4, 59.2]
+
+np_height = np.array(height)
+np_weight = np.array(weight)
+bmi = np_weight / np_height ** 2
+print(bmi)
+
+bmi[bmi > 23]</code></pre>
+
+  <h2>📊 Estadísticas con NumPy</h2>
+  <pre><code>np.mean(np_city[:, 0])
+np.median(np_city[:, 0])
+np.std(np_city[:, 0])
+np.corrcoef(np_city[:, 0], np_city[:, 1])</code></pre>
+
+</body>
+</html>

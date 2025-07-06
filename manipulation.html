@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📊 Sheetcheat — Manipulación de Datos con pandas</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      color: #145374;
+      font-size: 28px;
+    }
+    h2 {
+      margin-top: 40px;
+      color: #276678;
+    }
+    ul {
+      list-style-type: square;
+      margin-bottom: 20px;
+    }
+    pre {
+      background-color: #edf6ff;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 0.95em;
+    }
+    a {
+      color: #145374;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐼 Sheetcheat — Manipulación de Datos con pandas</h1>
+
+  <h2>📚 Índice</h2>
+  <ul>
+    <li><a href="#df">1. Introducción a DataFrames</a></li>
+    <li><a href="#explorar">2. Exploración de DataFrames</a></li>
+    <li><a href="#subsetting">3. Ordenamiento y Subconjuntos</a></li>
+    <li><a href="#columnas">4. Creación de Columnas Nuevas</a></li>
+    <li><a href="#resumen">5. Estadísticas Resumidas</a></li>
+    <li><a href="#duplicados">6. Conteo y Duplicados</a></li>
+    <li><a href="#pivot">7. Agrupación y Tablas Pivot</a></li>
+    <li><a href="#indexing">8. Índices y Slicing</a></li>
+    <li><a href="#plots">9. Visualización con Matplotlib</a></li>
+    <li><a href="#missing">10. Valores Faltantes</a></li>
+    <li><a href="#crear">11. Creación y Lectura de DataFrames</a></li>
+  </ul>
+
+  <h2 id="df">1. Introducción a DataFrames</h2>
+  <pre><code>import pandas as pd
+
+dogs = pd.DataFrame({
+    "name": ["Bella", "Charlie", "Lucy", "Cooper"],
+    "breed": ["Labrador", "Poodle", "Chow Chow", "Schnauzer"],
+    "height_cm": [56, 43, 46, 49],
+    "weight_kg": [24, 24, 24, 17],
+    "date_of_birth": ["2013-07-01", "2016-09-16", "2014-08-25", "2011-12-11"]
+})
+</code></pre>
+
+  <h2 id="explorar">2. Exploración de DataFrames</h2>
+  <pre><code>dogs.head()
+dogs.info()
+dogs.shape
+dogs.describe()
+dogs.columns
+dogs.index</code></pre>
+
+  <h2 id="subsetting">3. Ordenamiento y Subconjuntos</h2>
+  <pre><code>dogs.sort_values("weight_kg")
+dogs.sort_values(["weight_kg", "height_cm"], ascending=[True, False])
+
+dogs[["name", "breed"]]
+dogs[dogs["height_cm"] > 50]
+dogs[dogs["breed"] == "Labrador"]
+dogs[dogs["date_of_birth"] < "2015-01-01"]</code></pre>
+
+  <h2 id="columnas">4. Creación de Columnas Nuevas</h2>
+  <pre><code>dogs["height_m"] = dogs["height_cm"] / 100
+dogs["bmi"] = dogs["weight_kg"] / dogs["height_m"]**2</code></pre>
+
+  <h2 id="resumen">5. Estadísticas Resumidas</h2>
+  <pre><code>dogs["height_cm"].mean()
+dogs["date_of_birth"].min()
+
+def pct30(col):
+    return col.quantile(0.3)
+
+dogs["weight_kg"].agg([pct30])
+dogs[["weight_kg", "height_cm"]].agg(["min", "max", "sum"])
+dogs["weight_kg"].cumsum()</code></pre>
+
+  <h2 id="duplicados">6. Conteo y Duplicados</h2>
+  <pre><code>vet_visits.drop_duplicates(subset="name")
+vet_visits.drop_duplicates(subset=["name", "breed"])
+vet_visits["breed"].value_counts()
+vet_visits["breed"].value_counts(normalize=True)</code></pre>
+
+  <h2 id="pivot">7. Agrupación y Tablas Pivot</h2>
+  <pre><code>dogs.groupby("color")["weight_kg"].mean()
+dogs.groupby(["color", "breed"])[["weight_kg", "height_cm"]].mean()
+
+dogs.pivot_table(values="weight_kg", index="color", columns="breed", fill_value=0)
+dogs.pivot_table(values="weight_kg", index="color", aggfunc=["mean", "median"])</code></pre>
+
+  <h2 id="indexing">8. Índices y Slicing</h2>
+  <pre><code>dogs_ind = dogs.set_index("name")
+dogs_ind.reset_index()
+dogs_ind.loc[["Bella", "Stella"]]
+
+# Índices múltiples
+dogs.set_index(["breed", "color"]).loc[[("Labrador", "Brown"), ("Chihuahua", "Tan")]]</code></pre>
+
+  <h2 id="plots">9. Visualización con Matplotlib</h2>
+  <pre><code>import matplotlib.pyplot as plt
+
+dogs["height_cm"].hist()
+dogs.groupby("breed")["weight_kg"].mean().plot(kind="bar", title="Mean Weight by Breed")
+
+dogs.plot(x="height_cm", y="weight_kg", kind="scatter")
+plt.legend(["F", "M"])</code></pre>
+
+  <h2 id="missing">10. Valores Faltantes</h2>
+  <pre><code>dogs.isna().sum()
+dogs.dropna()
+dogs.fillna(0)</code></pre>
+
+  <h2 id="crear">11. Creación y Lectura de DataFrames</h2>
+  <pre><code>list_of_dicts = [{"name": "Ginger", "height_cm": 22}, {"name": "Scout", "height_cm": 59}]
+pd.DataFrame(list_of_dicts)
+
+dogs = pd.read_csv("dogs.csv")
+dogs.to_csv("dogs_out.csv")</code></pre>
+
+</body>
+</html>
