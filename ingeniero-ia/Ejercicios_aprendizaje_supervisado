@@ -1,0 +1,336 @@
+<nav>
+  <h2>📚 Índice de contenidos</h2>
+  <ul>
+    <li><a href="#clasificacion">1. Clasificación</a></li>
+    <li><a href="#regresion">2. Regresión</a></li>
+    <li><a href="#afinado">3. Afinar tu modelo</a></li>
+    <li><a href="#preprocesamiento">4. Preprocesamiento de datos y canalizaciones</a></li>
+  </ul>
+  <hr>
+</nav>
+<section id="clasificacion">
+  <h2>1. Clasificación</h2>
+
+  <h3>📌 1.1 Clasificación binaria</h3>
+  <pre><code>from sklearn.neighbors import KNeighborsClassifier
+
+y = churn_df["churn"].values
+X = churn_df[["account_length", "customer_service_calls"]].values
+
+knn = KNeighborsClassifier(n_neighbors=6)
+knn.fit(X, y)</code></pre>
+
+  <h3>📌 1.2 Predecir etiquetas con KNN</h3>
+  <pre><code>X_new = np.array([
+  [30.0, 17.5],
+  [107.0, 24.1],
+  [213.0, 10.9]
+])
+
+y_pred = knn.predict(X_new)
+print("Predictions:", y_pred)</code></pre>
+
+  <h3>📌 1.3 División entrenamiento/prueba + precisión</h3>
+  <pre><code>from sklearn.model_selection import train_test_split
+
+X = churn_df.drop("churn", axis=1).values
+y = churn_df["churn"].values
+
+X_train, X_test, y_train, y_test = train_test_split(
+  X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+print("Test Accuracy:", knn.score(X_test, y_test))</code></pre>
+
+  <h3>📌 1.4 Sobreajuste e infraajuste</h3>
+  <pre><code>neighbors = np.arange(1, 13)
+train_accuracies = {}
+test_accuracies = {}
+
+for neighbor in neighbors:
+    knn = KNeighborsClassifier(n_neighbors=neighbor)
+    knn.fit(X_train, y_train)
+    train_accuracies[neighbor] = knn.score(X_train, y_train)
+    test_accuracies[neighbor] = knn.score(X_test, y_test)</code></pre>
+
+  <h3>📌 1.5 Visualizar la complejidad del modelo</h3>
+  <pre><code>plt.title("KNN: Varying Number of Neighbors")
+plt.plot(neighbors, train_accuracies.values(), label="Training Accuracy")
+plt.plot(neighbors, test_accuracies.values(), label="Testing Accuracy")
+plt.xlabel("Number of Neighbors")
+plt.ylabel("Accuracy")
+plt.legend()
+plt.show()</code></pre>
+
+</section>
+<section id="regresion">
+  <h2>2. Regresión</h2>
+
+  <h3>📌 2.1 Crear características</h3>
+  <pre><code>X = sales_df["radio"].values.reshape(-1, 1)
+y = sales_df["sales"].values
+
+print(X.shape)
+print(y.shape)</code></pre>
+
+  <h3>📌 2.2 Construir modelo de regresión lineal</h3>
+  <pre><code>from sklearn.linear_model import LinearRegression
+
+reg = LinearRegression()
+reg.fit(X, y)
+
+predictions = reg.predict(X)
+print(predictions[:5])</code></pre>
+
+  <h3>📌 2.3 Visualizar modelo de regresión</h3>
+  <pre><code>import matplotlib.pyplot as plt
+
+plt.scatter(X, y, color="b")
+plt.plot(X, predictions, color="r")
+plt.xlabel("Radio Expenditure ($)")
+plt.ylabel("Sales ($)")
+plt.show()</code></pre>
+
+  <h3>📌 2.4 Ajustar y predecir regresión múltiple</h3>
+  <pre><code>X = sales_df.drop("sales", axis=1).values
+y = sales_df["sales"].values
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+  X, y, test_size=0.3, random_state=42
+)
+
+reg = LinearRegression()
+reg.fit(X_train, y_train)
+
+y_pred = reg.predict(X_test)
+print("Predictions:", y_pred[:2])
+print("Actual:", y_test[:2])</code></pre>
+
+  <h3>📌 2.5 Rendimiento del modelo</h3>
+  <pre><code>from sklearn.metrics import mean_squared_error
+
+r_squared = reg.score(X_test, y_test)
+rmse = mean_squared_error(y_test, y_pred, squared=False)
+
+print("R²:", r_squared)
+print("RMSE:", rmse)</code></pre>
+
+  <h3>📌 2.6 Validación cruzada con KFold</h3>
+  <pre><code>from sklearn.model_selection import KFold, cross_val_score
+
+kf = KFold(n_splits=6, shuffle=True, random_state=5)
+reg = LinearRegression()
+
+cv_scores = cross_val_score(reg, X, y, cv=kf)
+print(cv_scores)</code></pre>
+
+  <h3>📌 2.7 Analizar métricas de validación cruzada</h3>
+  <pre><code>import numpy as np
+
+print("Media:", np.mean(cv_scores))
+print("Desviación estándar:", np.std(cv_scores))
+print("Intervalo de confianza 95%:", np.quantile(cv_scores, [0.025, 0.975]))</code></pre>
+
+  <h3>📌 2.8 Regresión Ridge</h3>
+  <pre><code>from sklearn.linear_model import Ridge
+
+alphas = [0.1, 1.0, 10.0, 100.0]
+ridge_scores = []
+
+for alpha in alphas:
+    ridge = Ridge(alpha=alpha)
+    ridge.fit(X_train, y_train)
+    ridge_scores.append(ridge.score(X_test, y_test))
+
+print(ridge_scores)</code></pre>
+
+  <h3>📌 2.9 Regresión Lasso para importancia de características</h3>
+  <pre><code>from sklearn.linear_model import Lasso
+
+lasso = Lasso(alpha=0.3)
+lasso.fit(X, y)
+
+Lasso_coef = lasso.coef_
+print(Lasso_coef)</code></pre>
+</section>
+<section id="afinado">
+  <h2>3. Afinar tu modelo</h2>
+
+  <h3>📌 3.1 Definir una métrica principal</h3>
+  <p>Entre precisión, exactitud, F1-score y recuperación, selecciona la métrica más adecuada según el problema. Por ejemplo, para detectar malware, es más importante reducir falsos negativos.</p>
+
+  <h3>📌 3.2 Evaluación del modelo con matriz de confusión</h3>
+  <pre><code>from sklearn.metrics import confusion_matrix, classification_report
+
+knn = KNeighborsClassifier(n_neighbors=6)
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))</code></pre>
+
+  <h3>📌 3.3 Modelo de regresión logística</h3>
+  <pre><code>from sklearn.linear_model import LogisticRegression
+
+logreg = LogisticRegression()
+logreg.fit(X_train, y_train)
+
+y_pred_probs = logreg.predict_proba(X_test)[:, 1]
+print(y_pred_probs[:10])</code></pre>
+
+  <h3>📌 3.4 Curva ROC</h3>
+  <pre><code>from sklearn.metrics import roc_curve
+
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_probs)
+plt.plot([0, 1], [0, 1], 'k--')
+plt.plot(fpr, tpr)
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("ROC Curve")
+plt.show()</code></pre>
+
+  <h3>📌 3.5 Área bajo la curva ROC (AUC)</h3>
+  <pre><code>from sklearn.metrics import roc_auc_score
+
+print("ROC AUC Score:", roc_auc_score(y_test, y_pred_probs))</code></pre>
+
+  <h3>📌 3.6 Ajuste de hiperparámetros con GridSearchCV</h3>
+  <pre><code>from sklearn.model_selection import GridSearchCV
+
+param_grid = {"alpha": np.linspace(0.00001, 1, 20)}
+grid = GridSearchCV(Lasso(), param_grid, cv=kf)
+grid.fit(X_train, y_train)
+
+print("Mejores parámetros:", grid.best_params_)
+print("Mejor puntuación:", grid.best_score_)</code></pre>
+
+  <h3>📌 3.7 Ajuste con RandomizedSearchCV</h3>
+  <pre><code>from sklearn.model_selection import RandomizedSearchCV
+
+params = {
+  "penalty": ["l1", "l2"],
+  "C": np.linspace(0.1, 1, 50),
+  "class_weight": ["balanced", {0:0.8, 1:0.2}]
+}
+
+search = RandomizedSearchCV(logreg, params, cv=kf)
+search.fit(X_train, y_train)
+
+print("Parámetros óptimos:", search.best_params_)
+print("Mejor puntuación:", search.best_score_)</code></pre>
+</section>
+<section id="preprocesamiento">
+  <h2>4. Preprocesamiento de datos y canalizaciones</h2>
+
+  <h3>📌 4.1 Crear variables ficticias (dummies)</h3>
+  <pre><code>music_dummies = pd.get_dummies(music_df, drop_first=True)
+print("Shape:", music_dummies.shape)</code></pre>
+
+  <h3>📌 4.2 Regresión con características categóricas</h3>
+  <pre><code>X = music_dummies.drop("popularity", axis=1).values
+y = music_dummies["popularity"].values
+
+ridge = Ridge(alpha=0.2)
+scores = cross_val_score(ridge, X, y, cv=kf, scoring="neg_mean_squared_error")
+
+rmse = np.sqrt(-scores)
+print("Average RMSE:", np.mean(rmse))</code></pre>
+
+  <h3>📌 4.3 Eliminar datos faltantes y convertir género</h3>
+  <pre><code>music_df = music_df.dropna(subset=["genre", "popularity", "Loudness", "Liveness", "tempo"])
+music_df["genre"] = np.where(music_df["genre"] == "Rock", 1, 0)
+print("Forma:", music_df.shape)</code></pre>
+
+  <h3>📌 4.4 Canalización para predecir el género (parte I)</h3>
+  <pre><code>from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+
+imputer = SimpleImputer()
+knn = KNeighborsClassifier(n_neighbors=3)
+
+steps = [("imputer", imputer), ("knn", knn)]
+pipeline = Pipeline(steps)</code></pre>
+
+  <h3>📌 4.5 Canalización para predecir el género (parte II)</h3>
+  <pre><code>pipeline.fit(X_train, y_train)
+y_pred = pipeline.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred))</code></pre>
+
+  <h3>📌 4.6 Canalización con escalado para regresión</h3>
+  <pre><code>steps = [("scaler", StandardScaler()), ("lasso", Lasso(alpha=0.5))]
+pipeline = Pipeline(steps)
+
+pipeline.fit(X_train, y_train)
+print("R²:", pipeline.score(X_test, y_test))</code></pre>
+
+  <h3>📌 4.7 Canalización con escalado para clasificación + GridSearch</h3>
+  <pre><code>steps = [("scaler", StandardScaler()), ("logreg", LogisticRegression())]
+pipeline = Pipeline(steps)
+
+param_grid = {"logreg__C": np.linspace(0.001, 1.0, 20)}
+grid = GridSearchCV(pipeline, param_grid, cv=kf)
+
+grid.fit(X_train, y_train)
+print("Mejor C:", grid.best_params_)</code></pre>
+
+  <h3>📌 4.8 Comparar modelos de regresión</h3>
+  <pre><code>models = {
+  "Linear": LinearRegression(),
+  "Ridge": Ridge(alpha=0.1),
+  "Lasso": Lasso(alpha=0.1)
+}
+
+results = []
+for model in models.values():
+    cv_scores = cross_val_score(model, X_train, y_train, cv=kf)
+    results.append(cv_scores)
+
+plt.boxplot(results, labels=models.keys())
+plt.show()</code></pre>
+
+  <h3>📌 4.9 Evaluar RMSE en conjunto de prueba</h3>
+  <pre><code>for name, model in models.items():
+    model.fit(X_train_scaled, y_train)
+    y_pred = model.predict(X_test_scaled)
+    rmse = mean_squared_error(y_test, y_pred, squared=False)
+    print(f"{name} Test RMSE: {rmse:.2f}")</code></pre>
+
+  <h3>📌 4.10 Clasificación: comparación de modelos</h3>
+  <pre><code>models = {
+  "Logistic": LogisticRegression(),
+  "KNN": KNeighborsClassifier(),
+  "DecisionTree": DecisionTreeClassifier()
+}
+
+results = []
+for model in models.values():
+    cv_scores = cross_val_score(model, X_train_scaled, y_train, cv=kf)
+    results.append(cv_scores)
+
+plt.boxplot(results, labels=models.keys())
+plt.show()</code></pre>
+
+  <h3>📌 4.11 Canalización completa con imputación + escalado + tuning</h3>
+  <pre><code>steps = [
+  ("imputer", SimpleImputer()),
+  ("scaler", StandardScaler()),
+  ("logreg", LogisticRegression())
+]
+
+pipeline = Pipeline(steps)
+
+param_grid = {
+  "logreg__solver": ["newton-cg", "saga", "lbfgs"],
+  "logreg__C": np.linspace(0.001, 1.0, 10)
+}
+
+grid = GridSearchCV(pipeline, param_grid, cv=kf)
+grid.fit(X_train, y_train)
+
+print("Mejores parámetros:", grid.best_params_)
+print("Precisión en test:", grid.score(X_test, y_test))</code></pre>
+</section>
