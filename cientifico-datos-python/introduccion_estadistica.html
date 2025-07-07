@@ -41,7 +41,8 @@
   <li><a href="#discretas">7. Distribuciones discretas</a></li>
   <li><a href="#continuas">8. Distribuciones continuas</a></li>
   <li><a href="#correlacion">9. Correlación</a></li>
-  <li><a href="#experimentacion">10. Diseño experimental</a></li>
+  <li><a href="#transformaciones">10. Transformaciones de variables</a></li>
+  <li><a href="#experimentacion">11. Diseño experimental</a></li>
 </ul>
 
 <h2 id="que-es">1. ¿Qué es la estadística?</h2>
@@ -81,22 +82,42 @@ Muestreo con y sin reemplazo</code></pre>
 
 <h2 id="discretas">7. Distribuciones discretas</h2>
 <pre><code>Binomial: binom.rvs(n, p, size)
-Poisson: poisson.pmf(k, λ)</code></pre>
+Poisson: poisson.pmf(k, λ)
+Distribución uniforme discreta: probabilidad igual entre valores finitos</code></pre>
 
 <h2 id="continuas">8. Distribuciones continuas</h2>
 <pre><code>Normal: norm.cdf(x, media, std)
 Exponencial: expon.cdf(t, scale=1/λ)
-Uniforme: uniform.cdf(x, min, max)</code></pre>
+Uniforme continua: uniform.cdf(x, min, max)</code></pre>
 
 <h2 id="correlacion">9. Correlación</h2>
 <pre><code>df['x'].corr(df['y'])
 Coeficiente r ∈ [-1, 1]
 Visualización con scatterplot + línea de tendencia</code></pre>
+<p>🔍 La correlación no implica causalidad. Siempre visualiza tus datos.</p>
 
-<h2 id="experimentacion">10. Diseño experimental</h2>
+<h2 id="transformaciones">10. Transformaciones de variables</h2>
+<p>📐 Transformaciones útiles cuando la relación entre variables no es lineal:</p>
+<pre><code># Transformación logarítmica
+df['log_bodywt'] = np.log(df['bodywt'])
+
+# Visualización
+sns.lmplot(x='log_bodywt', y='awake', data=df, ci=None)
+
+# Correlación transformada
+df['log_bodywt'].corr(df['awake'])</code></pre>
 <ul>
-  <li><strong>Controlado</strong>: asignación aleatoria, placebo, doble ciego</li>
-  <li><strong>Observacional</strong>: sin intervención, riesgo de confusores</li>
+  <li><strong>log(x)</strong>: reduce asimetría positiva.</li>
+  <li><strong>√x</strong>: estabiliza varianza.</li>
+  <li><strong>1/x</strong>: reduce impacto de valores grandes.</li>
+  <li><strong>Combinadas</strong>: log(x) y log(y), sqrt(x) vs 1/y, etc.</li>
+</ul>
+
+<h2 id="experimentacion">11. Diseño experimental</h2>
+<ul>
+  <li><strong>Experimentos controlados</strong>: aleatorización, placebo, doble ciego.</li>
+  <li><strong>Estudios observacionales</strong>: no hay asignación de tratamiento.</li>
+  <li><strong>Confusores</strong>: variables ocultas que influyen en la relación observada.</li>
   <li><strong>Estudios longitudinales</strong> vs <strong>transversales</strong></li>
 </ul>
 
