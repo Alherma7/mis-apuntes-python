@@ -1,50 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>📘 Sheetcheats de Python y pandas</title>
+  <meta charset="UTF-8">
+  <title>Índice de mis apuntes Python</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background-color: #f2f2f2;
-      padding: 40px;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
       color: #333;
     }
-    h1 {
-      color: #145374;
-      font-size: 28px;
-    }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    li {
-      margin: 10px 0;
-    }
-    a {
-      background-color: #145374;
+    header {
+      background-color: #005f73;
       color: white;
-      padding: 10px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      display: inline-block;
+      padding: 10px 0;
+      text-align: center;
     }
-    a:hover {
-      background-color: #276678;
+    nav {
+      background-color: #0a9396;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+    nav li {
+      margin: 0 20px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      padding: 40px;
+    }
+    details {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    summary {
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    ul.folder-list {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+    ul.folder-list li a {
+      text-decoration: none;
+      color: #008cba;
+    }
+    ul.folder-list li a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      color: #888;
+      margin: 40px 0 10px;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>📚 Mis Apuntes Python</h1>
+  </header>
 
-  <h1>📘 Sheetcheats de Python y pandas</h1>
-  <p>Explora tus apuntes en formato visual desde aquí:</p>
+  <nav>
+    <ul>
+      <li><a href="#cientifico">Científico de datos</a></li>
+      <li><a href="#ia">Ingeniero de IA</a></li>
+    </ul>
+  </nav>
 
-  <ul>
-    <li><a href="Introduction.html">🐍 Python Básico — Introducción</a></li>
-    <li><a href="Intermedio.html">🐍 Python Intermedio — Matplotlib y pandas</a></li>
-    <li><a href="manipulation.html">📦 Manipulación de Datos con pandas</a></li>
-    <li><a href="uniones.html">🔗 Joining Data with pandas</a></li>
-  </ul>
+  <div class="container">
+    <details id="cientifico" open>
+      <summary>🔬 Científico de datos asociado en Python</summary>
+      <ul class="folder-list">
+        <li><a href="cientifico-datos-python/Introduction.html">Introducción</a></li>
+        <li><a href="cientifico-datos-python/Intermedio.html">Intermedio</a></li>
+        <li><a href="cientifico-datos-python/manipulation.html">Manipulación</a></li>
+        <li><a href="cientifico-datos-python/uniones.html">Uniones</a></li>
+      </ul>
+    </details>
 
+    <details id="ia">
+      <summary>🤖 Ingeniero asociado de IA</summary>
+      <ul class="folder-list">
+        <li><a href="ingeniero-ia/Aprendizaje_supervisado con scikit-learn.html">Aprendizaje supervisado con scikit-learn</a></li>
+        <li><a href="ingeniero-ia/Aprendizaje_no_supervisado.html">Aprendizaje no supervisado en Python</a></li>
+        <li><a href="ingeniero-ia/Trabajar_con_Cara_Abrazada.html">Trabajar con Cara Abrazada</a></li>
+        <li><a href="ingeniero-ia/Introduccion_al_aprendizaje_profundo_con_PyTorch.html">Introducción al aprendizaje profundo con PyTorch</a></li>
+        <li><a href="ingeniero-ia/IA_explicable_en_Python.html">IA explicable en Python</a></li>
+        <li><a href="ingeniero-ia/Aprendizaje_profundo_intermedio_con_PyTorch.html">Aprendizaje profundo intermedio con PyTorch</a></li>
+      </ul>
+    </details>
+  </div>
+
+  <footer>
+    Creado por Alejandro &middot; Última actualización: Julio 2025
+  </footer>
 </body>
 </html>
