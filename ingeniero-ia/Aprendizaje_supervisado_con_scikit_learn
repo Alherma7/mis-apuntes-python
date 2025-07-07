@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aprendizaje supervisado con Scikit-learn</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    h1, h2 {
+      color: #0077b6;
+    }
+    section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #fff;
+      border-left: 6px solid #90e0ef;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .practica {
+      border-left: 6px solid #00b4d8;
+    }
+    pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 Curso: Aprendizaje Supervisado con Scikit-learn</h1>
+
+  <section>
+    <h2>📚 Parte Teórica</h2>
+    <ul>
+      <li>Qué es Machine Learning y diferencias entre aprendizaje supervisado y no supervisado.</li>
+      <li>Características (features) y variable objetivo (target variable).</li>
+      <li>Tipos de aprendizaje supervisado: clasificación y regresión.</li>
+      <li>Modelos básicos como K-Nearest Neighbors, Regresión Lineal, Ridge y Lasso.</li>
+      <li>Evaluación del modelo: accuracy, confusion matrix, precision, recall, F1-score, ROC AUC.</li>
+      <li>Preprocesamiento de datos: imputación, escalado, codificación de variables categóricas.</li>
+      <li>Validación del modelo: split train/test, cross-validation, pipelines.</li>
+      <li>Optimización de hiperparámetros con GridSearchCV y RandomizedSearchCV.</li>
+    </ul>
+  </section>
+
+  <section class="practica">
+    <h2>🛠 Parte Práctica</h2>
+    <p>Ejemplo básico de clasificación con KNN:</p>
+    <pre><code>
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+
+X = churn_df[["total_day_charge", "total_eve_charge"]].values
+y = churn_df["churn"].values
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=21, stratify=y)
+
+knn = KNeighborsClassifier(n_neighbors=6)
+knn.fit(X_train, y_train)
+
+print("Accuracy en test:", knn.score(X_test, y_test))
+    </code></pre>
+
+    <p>Ejemplo de regresión lineal simple:</p>
+    <pre><code>
+from sklearn.linear_model import LinearRegression
+
+X_bmi = diabetes_df[["bmi"]].values
+y = diabetes_df["glucose"].values
+
+reg = LinearRegression()
+reg.fit(X_bmi, y)
+predictions = reg.predict(X_bmi)
+
+print(predictions[:5])
+    </code></pre>
+
+    <p>Evaluación con ROC AUC:</p>
+    <pre><code>
+from sklearn.metrics import roc_auc_score
+
+y_pred_probs = logreg.predict_proba(X_test)[:, 1]
+print("ROC AUC:", roc_auc_score(y_test, y_pred_probs))
+    </code></pre>
+  </section>
+</body>
+</html>
+
+<section class="practica">
+  <h2>🧪 Ejercicios Prácticos Finales</h2>
+
+  <ul>
+    <li>🔁 Validación cruzada con <code>KFold</code> y <code>cross_val_score</code> para modelos de regresión.</li>
+    <li>📊 Visualización de resultados mediante <code>boxplot</code> para comparar modelos como regresión lineal, Ridge y Lasso.</li>
+    <li>📈 Evaluación de modelos de clasificación con matriz de confusión y reportes de precisión.</li>
+    <li>⚙️ Ajuste de hiperparámetros usando <code>GridSearchCV</code> y <code>RandomizedSearchCV</code> para modelos como <code>LogisticRegression</code> y <code>Lasso</code>.</li>
+    <li>🎯 Construcción de canalizaciones (<code>Pipeline</code>) que integran imputación de datos, escalado y modelos.</li>
+    <li>🎵 Ejercicios enfocados en predecir popularidad y género musical usando modelos supervisados y validación cruzada con <code>music_df</code>.</li>
+    <li>📉 Métricas finales como RMSE, R² y ROC AUC para comparar rendimiento de los modelos.</li>
+  </ul>
+
+  <p><strong>Fragmento de código - validación cruzada:</strong></p>
+  <pre><code>
+from sklearn.model_selection import KFold, cross_val_score
+from sklearn.linear_model import LinearRegression
+
+kf = KFold(n_splits=6, shuffle=True, random_state=5)
+reg = LinearRegression()
+cv_scores = cross_val_score(reg, X, y, cv=kf)
+
+print("Resultados de validación cruzada:", cv_scores)
+  </code></pre>
+
+  <p><strong>Fragmento de código - canalización completa:</strong></p>
+  <pre><code>
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+steps = [("imputer", SimpleImputer()),
+         ("scaler", StandardScaler()),
+         ("Logreg", LogisticRegression())]
+
+pipeline = Pipeline(steps)
+pipeline.fit(X_train, y_train)
+print("Exactitud en el conjunto de prueba:", pipeline.score(X_test, y_test))
+  </code></pre>
+</section>
