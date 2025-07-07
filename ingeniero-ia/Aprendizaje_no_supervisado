@@ -2,122 +2,147 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Aprendizaje no supervisado en Python</title>
+  <title>Sheetcheat — Aprendizaje no supervisado en Python</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background-color: #f4f4f4;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
       color: #333;
     }
     h1, h2 {
-      color: #0077b6;
+      color: #145374;
+    }
+    code {
+      background-color: #e6f2ff;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      background-color: #e6f2ff;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.95em;
     }
     section {
       margin-bottom: 40px;
-      padding: 20px;
-      background-color: #fff;
-      border-left: 6px solid #90e0ef;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    .practica { border-left-color: #00b4d8; }
-    .ejercicios { border-left-color: #0096c7; }
-    pre {
-      background-color: #f0f0f0;
-      padding: 10px;
-      overflow-x: auto;
-      border-radius: 5px;
-    }
-    ul { padding-left: 20px; }
   </style>
 </head>
 <body>
-  <h1>🌀 Aprendizaje No Supervisado en Python</h1>
 
-  <section class="teoria">
-    <h2>📘 Parte Teórica</h2>
-    <ul>
-      <li>Introducción a agrupación (clustering) para explorar conjuntos de datos.</li>
-      <li>Modelado con <code>KMeans</code>: número de clusters, inercia y etiquetas.</li>
-      <li>Evaluación visual con diagramas de dispersión y centroides.</li>
-      <li>Uso de <code>PCA</code>, <code>NMF</code> y <code>t-SNE</code> para reducción dimensional.</li>
-      <li>Aplicaciones reales con datos de peces, granos, acciones y Wikipedia.</li>
-      <li>Jerarquía de clusters con <code>Linkage</code> y <code>dendrogram</code>.</li>
-      <li>Matrices tf-idf para análisis de texto y recomendación de contenido.</li>
-    </ul>
-  </section>
+  <h1>🌀 Sheetcheat — Aprendizaje no supervisado en Python</h1>
 
-  <section class="practica">
-    <h2>🛠 Parte Práctica</h2>
-    <pre><code>
-from sklearn.cluster import KMeans
+  <section>
+    <h2>🔍 Clustering con KMeans</h2>
+    <pre><code>from sklearn.cluster import KMeans
+
 model = KMeans(n_clusters=3)
 model.fit(points)
 labels = model.predict(new_points)
-print(labels)
-    </code></pre>
+print(labels)</code></pre>
+  </section>
 
-    <pre><code>
-xs = new_points[:, 0]
+  <section>
+    <h2>📊 Visualización de grupos y centroides</h2>
+    <pre><code>xs = new_points[:, 0]
 ys = new_points[:, 1]
+
 plt.scatter(xs, ys, c=labels, alpha=0.5)
 centroids = model.cluster_centers_
 plt.scatter(centroids[:, 0], centroids[:, 1], marker='D', s=50)
-plt.show()
-    </code></pre>
+plt.show()</code></pre>
+  </section>
 
-    <pre><code>
-from sklearn.pipeline import make_pipeline
+  <section>
+    <h2>📈 Determinación del número óptimo de clusters</h2>
+    <pre><code>ks = range(1, 6)
+inertias = []
+
+for k in ks:
+    model = KMeans(n_clusters=k)
+    model.fit(samples)
+    inertias.append(model.inertia_)
+
+plt.plot(ks, inertias, '-o')
+plt.xlabel('Número de clusters, k')
+plt.ylabel('Inercia')
+plt.xticks(ks)
+plt.show()</code></pre>
+  </section>
+
+  <section>
+    <h2>⚙️ Agrupación y evaluación con tabulación cruzada</h2>
+    <pre><code>labels = model.fit_predict(samples)
+df = pd.DataFrame({'labels': labels, 'varieties': varieties})
+ct = pd.crosstab(df['labels'], df['varieties'])
+print(ct)</code></pre>
+  </section>
+
+  <section>
+    <h2>🔁 Pipeline para escalar y agrupar</h2>
+    <pre><code>from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+
 scaler = StandardScaler()
 kmeans = KMeans(n_clusters=4)
 pipeline = make_pipeline(scaler, kmeans)
-pipeline.fit(samples)
-labels = pipeline.predict(samples)
-    </code></pre>
 
-    <pre><code>
-from sklearn.manifold import TSNE
-model = TSNE(learning_rate=200)
-tsne_features = model.fit_transform(samples)
-xs = tsne_features[:,0]
-ys = tsne_features[:,1]
-plt.scatter(xs, ys, c=variety_numbers)
-plt.show()
-    </code></pre>
+pipeline.fit(samples)
+labels = pipeline.predict(samples)</code></pre>
   </section>
 
-  <section class="ejercicios">
-    <h2>🧪 Ejercicios Prácticos Finales</h2>
-    <ul>
-      <li>Determinar número óptimo de clusters con inercia.</li>
-      <li>Tabulación cruzada para evaluar agrupaciones vs etiquetas reales.</li>
-      <li>Agrupación jerárquica con <code>scipy.cluster.hierarchy</code> y visualización con <code>dendrogram</code>.</li>
-      <li>Visualización avanzada con t-SNE en datos de acciones y granos.</li>
-      <li>Reducción de dimensión con <code>PCA</code> en imágenes y vectores tf-idf.</li>
-      <li>Uso de <code>NMF</code> para descubrir temas en Wikipedia y patrones en imágenes LED.</li>
-      <li>Recomendación musical basada en similitud de coseno entre vectores NMF.</li>
-    </ul>
+  <section>
+    <h2>📉 Reducción dimensional con PCA y t-SNE</h2>
+    <pre><code>from sklearn.decomposition import PCA
+model = PCA(n_components=2)
+pca_features = model.fit_transform(scaled_samples)
+print(pca_features.shape)</code></pre>
 
-    <pre><code>
-from sklearn.decomposition import NMF
+    <pre><code>from sklearn.manifold import TSNE
+model = TSNE(learning_rate=200)
+tsne_features = model.fit_transform(samples)
+
+xs = tsne_features[:, 0]
+ys = tsne_features[:, 1]
+plt.scatter(xs, ys, c=variety_numbers)
+plt.show()</code></pre>
+  </section>
+
+  <section>
+    <h2>📚 Análisis de texto con NMF y tf-idf</h2>
+    <pre><code>from sklearn.feature_extraction.text import TfidfVectorizer
+tfidf = TfidfVectorizer()
+csr_mat = tfidf.fit_transform(documents)
+words = tfidf.get_feature_names_out()
+print(words)</code></pre>
+
+    <pre><code>from sklearn.decomposition import NMF
 model = NMF(n_components=6)
 nmf_features = model.fit_transform(articles)
 df = pd.DataFrame(nmf_features, index=titles)
 similarities = df.dot(df.loc["Cristiano Ronaldo"])
-print(similarities.nlargest())
-    </code></pre>
-
-    <pre><code>
-from sklearn.decomposition import PCA
-model = PCA()
-pca_features = model.fit_transform(grains)
-xs = pca_features[:, 0]
-ys = pca_features[:, 1]
-plt.scatter(xs, ys)
-plt.axis('equal')
-plt.show()
-    </code></pre>
+print(similarities.nlargest())</code></pre>
   </section>
+
+  <section>
+    <h2>🎵 Recomendación musical con NMF</h2>
+    <pre><code>from sklearn.preprocessing import MaxAbsScaler, Normalizer
+from sklearn.pipeline import make_pipeline
+
+scaler = MaxAbsScaler()
+nmf = NMF(n_components=20)
+normalizer = Normalizer()
+pipeline = make_pipeline(scaler, nmf, normalizer)
+
+norm_features = pipeline.fit_transform(artists)
+df = pd.DataFrame(norm_features, index=artist_names)
+
+similarities = df.dot(df.loc["Bruce Springsteen"])
+print(similarities.nlargest())</code></pre>
+  </section>
+
 </body>
 </html>
