@@ -1,4 +1,15 @@
-<section>
+<nav>
+  <h2>📚 Índice de módulos</h2>
+  <ul>
+    <li><a href="#agrupacion">1. Agrupación para la exploración de conjuntos de datos</a></li>
+    <li><a href="#jerarquica">2. Visualización con agrupación jerárquica y t-SNE</a></li>
+    <li><a href="#pca">3. Decorrelación de tus datos y reducción de dimensiones</a></li>
+    <li><a href="#interpretables">4. Descubrir rasgos interpretables</a></li>
+  </ul>
+  <hr>
+</nav>
+
+<section id="agrupacion">
   <h2>📍 Visualización inicial de agrupaciones</h2>
   <pre><code>xs = points[:, 0]
 ys = points[:, 1]
@@ -91,7 +102,7 @@ df = pd.DataFrame({'Labels': labels, 'companies': companies})
 print(df.sort_values(by='Labels'))</code></pre>
 </section>
 
-<section>
+<section id="jerarquica">
   <h2>🔗 Agrupación jerárquica de datos de granos</h2>
   <pre><code>from scipy.cluster.hierarchy import linkage, dendrogram
 import matplotlib.pyplot as plt
@@ -188,7 +199,7 @@ correlation, _ = pearsonr(width, length)
 print("Correlación:", correlation)</code></pre>
 </section>
 
-<section>
+<section id="pca">
   <h2>🔄 Decorrelación con PCA</h2>
   <pre><code>from sklearn.decomposition import PCA
 
@@ -251,7 +262,7 @@ pca_features = pca.transform(scaled_samples)
 
 print(pca_features.shape)</code></pre>
 </section>
-<section>
+<section id="interpretables">
   <h2>🧠 NMF aplicado a artículos de Wikipedia</h2>
   <pre><code>from sklearn.decomposition import NMF
 
