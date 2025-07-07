@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📊 Sheetcheat — Estadística en Python</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      color: #333;
+    }
+    h1 { color: #145374; font-size: 28px; }
+    h2 { margin-top: 40px; color: #276678; }
+    ul { list-style-type: square; margin-bottom: 20px; }
+    pre {
+      background-color: #edf6ff;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 0.95em;
+    }
+    p { margin: 8px 0; }
+    a { color: #145374; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<h1>📊 Sheetcheat — Estadística en Python</h1>
+
+<h2>📚 Índice</h2>
+<ul>
+  <li><a href="#que-es">1. ¿Qué es la estadística?</a></li>
+  <li><a href="#tipos-estadistica">2. Tipos de estadística</a></li>
+  <li><a href="#tipos-datos">3. Tipos de datos</a></li>
+  <li><a href="#medidas-centro">4. Medidas de centro</a></li>
+  <li><a href="#medidas-dispersion">5. Medidas de dispersión</a></li>
+  <li><a href="#probabilidad">6. Probabilidad y distribuciones</a></li>
+  <li><a href="#discretas">7. Distribuciones discretas</a></li>
+  <li><a href="#continuas">8. Distribuciones continuas</a></li>
+  <li><a href="#correlacion">9. Correlación</a></li>
+  <li><a href="#experimentacion">10. Diseño experimental</a></li>
+</ul>
+
+<h2 id="que-es">1. ¿Qué es la estadística?</h2>
+<p>🔍 Estudio de la recopilación, análisis e interpretación de datos.</p>
+<p>💡 Aplicaciones como predicción de ventas, pruebas A/B, estimaciones poblacionales.</p>
+
+<h2 id="tipos-estadistica">2. Tipos de estadística</h2>
+<ul>
+  <li><strong>Descriptiva</strong>: resume datos observados.</li>
+  <li><strong>Inferencial</strong>: hace estimaciones sobre una población a partir de una muestra.</li>
+</ul>
+
+<h2 id="tipos-datos">3. Tipos de datos</h2>
+<pre><code>Numéricos:
+  - Continuos: peso, velocidad
+  - Discretos: número de hijos
+
+Categóricos:
+  - Nominales: país, estado civil
+  - Ordinales: niveles de acuerdo (1-5)</code></pre>
+
+<h2 id="medidas-centro">4. Medidas de centro</h2>
+<pre><code>Media → np.mean(columna)
+Mediana → np.median(columna)
+Moda → statistics.mode(columna)</code></pre>
+
+<h2 id="medidas-dispersion">5. Medidas de dispersión</h2>
+<pre><code>Varianza: np.var(columna, ddof=1)
+Desviación estándar: np.std(columna, ddof=1)
+Desviación media absoluta: np.mean(np.abs(...))
+IQR: np.quantile(Q3) - np.quantile(Q1)</code></pre>
+
+<h2 id="probabilidad">6. Probabilidad y distribuciones</h2>
+<pre><code>P(evento) = casos favorables / total de casos posibles
+Eventos independientes vs dependientes
+Muestreo con y sin reemplazo</code></pre>
+
+<h2 id="discretas">7. Distribuciones discretas</h2>
+<pre><code>Binomial: binom.rvs(n, p, size)
+Poisson: poisson.pmf(k, λ)</code></pre>
+
+<h2 id="continuas">8. Distribuciones continuas</h2>
+<pre><code>Normal: norm.cdf(x, media, std)
+Exponencial: expon.cdf(t, scale=1/λ)
+Uniforme: uniform.cdf(x, min, max)</code></pre>
+
+<h2 id="correlacion">9. Correlación</h2>
+<pre><code>df['x'].corr(df['y'])
+Coeficiente r ∈ [-1, 1]
+Visualización con scatterplot + línea de tendencia</code></pre>
+
+<h2 id="experimentacion">10. Diseño experimental</h2>
+<ul>
+  <li><strong>Controlado</strong>: asignación aleatoria, placebo, doble ciego</li>
+  <li><strong>Observacional</strong>: sin intervención, riesgo de confusores</li>
+  <li><strong>Estudios longitudinales</strong> vs <strong>transversales</strong></li>
+</ul>
+
+</body>
+</html>
